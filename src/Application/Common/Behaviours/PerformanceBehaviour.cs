@@ -9,43 +9,34 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
     private readonly Stopwatch _timer;
     private readonly ILogger<TRequest> _logger;
     private readonly IUser _user;
-    private readonly IIdentityService _identityService;
 
     public PerformanceBehaviour(
         ILogger<TRequest> logger,
-        IUser user,
-        IIdentityService identityService)
+        IUser user)
     {
         _timer = new Stopwatch();
 
         _logger = logger;
         _user = user;
-        _identityService = identityService;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _timer.Start();
 
-        var response = await next();
+        TResponse? response = await next();
 
         _timer.Stop();
 
-        var elapsedMilliseconds = _timer.ElapsedMilliseconds;
+        long elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
         if (elapsedMilliseconds > 500)
         {
-            var requestName = typeof(TRequest).Name;
-            var userId = _user.Id ?? string.Empty;
-            var userName = string.Empty;
+            string requestName = typeof(TRequest).Name;
+            string userId = _user.Id ?? "system";
 
-            if (!string.IsNullOrEmpty(userId))
-            {
-                userName = await _identityService.GetUserNameAsync(userId);
-            }
-
-            _logger.LogWarning("Connectlime Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
-                requestName, elapsedMilliseconds, userId, userName, request);
+            _logger.LogWarning("Connectlime Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}",
+                requestName, elapsedMilliseconds, userId, request);
         }
 
         return response;

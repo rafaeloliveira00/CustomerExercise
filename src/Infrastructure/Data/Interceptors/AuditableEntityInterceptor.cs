@@ -8,7 +8,9 @@ namespace Connectlime.Infrastructure.Data.Interceptors;
 
 public class AuditableEntityInterceptor : SaveChangesInterceptor
 {
+    // keeping the user service (even if it will always be null on the current code state)
     private readonly IUser _user;
+
     private readonly TimeProvider _dateTime;
 
     public AuditableEntityInterceptor(
@@ -37,17 +39,17 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
+        foreach (EntityEntry<BaseAuditableEntity> entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedBy = _user.Id;
+                entry.Entity.CreatedBy = _user.Id ?? "system";
                 entry.Entity.Created = _dateTime.GetUtcNow();
-            } 
+            }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                entry.Entity.LastModifiedBy = _user.Id;
+                entry.Entity.LastModifiedBy = _user.Id ?? "system";
                 entry.Entity.LastModified = _dateTime.GetUtcNow();
             }
         }
@@ -57,8 +59,8 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
 public static class Extensions
 {
     public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
-        entry.References.Any(r => 
-            r.TargetEntry != null && 
-            r.TargetEntry.Metadata.IsOwned() && 
+        entry.References.Any(r =>
+            r.TargetEntry != null &&
+            r.TargetEntry.Metadata.IsOwned() &&
             (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
 }

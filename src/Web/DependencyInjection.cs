@@ -3,9 +3,6 @@ using Connectlime.Application.Common.Interfaces;
 using Connectlime.Infrastructure.Data;
 using Connectlime.Web.Services;
 using Microsoft.AspNetCore.Mvc;
-
-using NSwag;
-using NSwag.Generation.Processors.Security;
 using ZymLabs.NSwag.FluentValidation;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -45,23 +42,11 @@ public static class DependencyInjection
         {
             configure.Title = "Connectlime API";
 
-
             // Add the fluent validations schema processor
-            var fluentValidationSchemaProcessor = 
+            FluentValidationSchemaProcessor fluentValidationSchemaProcessor =
                 sp.CreateScope().ServiceProvider.GetRequiredService<FluentValidationSchemaProcessor>();
 
             configure.SchemaSettings.SchemaProcessors.Add(fluentValidationSchemaProcessor);
-
-            // Add JWT
-            configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
-            {
-                Type = OpenApiSecuritySchemeType.ApiKey,
-                Name = "Authorization",
-                In = OpenApiSecurityApiKeyLocation.Header,
-                Description = "Type into the textbox: Bearer {your JWT token}."
-            });
-
-            configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
 
         return services;

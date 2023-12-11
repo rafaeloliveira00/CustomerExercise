@@ -9,15 +9,14 @@ public class TodoLists : EndpointGroupBase
 {
     public override void Map(WebApplication app)
     {
-        app.MapGroup(this)
-            .RequireAuthorization()
-            .MapGet(GetTodoLists)
+        app.MapGroup(this, "list")
+            .MapGet(GetTodoList)
             .MapPost(CreateTodoList)
             .MapPut(UpdateTodoList, "{id}")
             .MapDelete(DeleteTodoList, "{id}");
     }
 
-    public async Task<TodosVm> GetTodoLists(ISender sender)
+    public async Task<TodosVm> GetTodoList(ISender sender)
     {
         return await sender.Send(new GetTodosQuery());
     }

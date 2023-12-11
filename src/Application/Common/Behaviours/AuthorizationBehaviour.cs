@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Connectlime.Application.Common.Exceptions;
 using Connectlime.Application.Common.Interfaces;
 using Connectlime.Application.Common.Security;
 
@@ -8,72 +7,24 @@ namespace Connectlime.Application.Common.Behaviours;
 public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly IUser _user;
-    private readonly IIdentityService _identityService;
 
-    public AuthorizationBehaviour(
-        IUser user,
-        IIdentityService identityService)
+    public AuthorizationBehaviour(IUser user)
     {
         _user = user;
-        _identityService = identityService;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
+        // check if the request has the Authorize attribute
+        // right now we do not have any protected request nor login (out of the scope of this exercise)
+        IEnumerable<AuthorizeAttribute> authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
 
-        if (authorizeAttributes.Any())
+        // here it checks if the current request has the Authorize attribute and if we have a valid user login
+        if (authorizeAttributes.Any() && _user.Id == null)
         {
-            // Must be authenticated user
-            if (_user.Id == null)
-            {
-                throw new UnauthorizedAccessException();
-            }
-
-            // Role-based authorization
-            var authorizeAttributesWithRoles = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
-
-            if (authorizeAttributesWithRoles.Any())
-            {
-                var authorized = false;
-
-                foreach (var roles in authorizeAttributesWithRoles.Select(a => a.Roles.Split(',')))
-                {
-                    foreach (var role in roles)
-                    {
-                        var isInRole = await _identityService.IsInRoleAsync(_user.Id, role.Trim());
-                        if (isInRole)
-                        {
-                            authorized = true;
-                            break;
-                        }
-                    }
-                }
-
-                // Must be a member of at least one role in roles
-                if (!authorized)
-                {
-                    throw new ForbiddenAccessException();
-                }
-            }
-
-            // Policy-based authorization
-            var authorizeAttributesWithPolicies = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Policy));
-            if (authorizeAttributesWithPolicies.Any())
-            {
-                foreach (var policy in authorizeAttributesWithPolicies.Select(a => a.Policy))
-                {
-                    var authorized = await _identityService.AuthorizeAsync(_user.Id, policy);
-
-                    if (!authorized)
-                    {
-                        throw new ForbiddenAccessException();
-                    }
-                }
-            }
+            throw new UnauthorizedAccessException();
         }
 
-        // User is authorized / authorization not required
         return await next();
     }
 }

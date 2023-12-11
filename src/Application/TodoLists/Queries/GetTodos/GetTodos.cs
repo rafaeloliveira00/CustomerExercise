@@ -5,7 +5,6 @@ using Connectlime.Domain.Enums;
 
 namespace Connectlime.Application.TodoLists.Queries.GetTodos;
 
-[Authorize]
 public record GetTodosQuery : IRequest<TodosVm>;
 
 public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, TodosVm>
