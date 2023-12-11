@@ -1,5 +1,4 @@
-﻿using Connectlime.Domain.Constants;
-using Connectlime.Infrastructure.Data;
+﻿using Connectlime.Infrastructure.Data;
 using Connectlime.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -52,11 +51,6 @@ public partial class Testing
     public static async Task<string> RunAsDefaultUserAsync()
     {
         return await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
-    }
-
-    public static async Task<string> RunAsAdministratorAsync()
-    {
-        return await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { Roles.Administrator });
     }
 
     public static async Task<string> RunAsUserAsync(string userName, string password, string[] roles)

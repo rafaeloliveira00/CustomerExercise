@@ -1,11 +1,9 @@
 ﻿using Connectlime.Application.Common.Interfaces;
 using Connectlime.Application.Common.Security;
-using Connectlime.Domain.Constants;
 
 namespace Connectlime.Application.TodoLists.Commands.PurgeTodoLists;
 
-[Authorize(Roles = Roles.Administrator)]
-[Authorize(Policy = Policies.CanPurge)]
+[Authorize]
 public record PurgeTodoListsCommand : IRequest;
 
 public class PurgeTodoListsCommandHandler : IRequestHandler<PurgeTodoListsCommand>

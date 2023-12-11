@@ -1,5 +1,4 @@
 ﻿using Connectlime.Application.Common.Interfaces;
-using Connectlime.Domain.Constants;
 using Connectlime.Infrastructure.Data;
 using Connectlime.Infrastructure.Data.Interceptors;
 using Connectlime.Infrastructure.Identity;
@@ -44,10 +43,6 @@ public static class DependencyInjection
             .AddApiEndpoints();
 
         services.AddSingleton(TimeProvider.System);
-        services.AddTransient<IIdentityService, IdentityService>();
-
-        services.AddAuthorization(options =>
-            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
 
         return services;
     }

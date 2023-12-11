@@ -10,9 +10,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
     private readonly ILogger<TRequest> _logger;
     private readonly IUser _user;
 
-    public PerformanceBehaviour(
-        ILogger<TRequest> logger,
-        IUser user)
+    public PerformanceBehaviour(ILogger<TRequest> logger, IUser user)
     {
         _timer = new Stopwatch();
 

@@ -1,6 +1,5 @@
 ﻿using Connectlime.Application.TodoLists.Queries.GetTodos;
 using Connectlime.Domain.Entities;
-using Connectlime.Domain.ValueObjects;
 
 namespace Connectlime.Application.FunctionalTests.TodoLists.Queries;
 
@@ -28,7 +27,6 @@ public class GetTodosTests : BaseTestFixture
         await AddAsync(new TodoList
         {
             Title = "Shopping",
-            Colour = Colour.Blue,
             Items =
                     {
                         new TodoItem { Title = "Apples", Done = true },
@@ -55,7 +53,7 @@ public class GetTodosTests : BaseTestFixture
         var query = new GetTodosQuery();
 
         var action = () => SendAsync(query);
-        
+
         await action.Should().ThrowAsync<UnauthorizedAccessException>();
     }
 }
