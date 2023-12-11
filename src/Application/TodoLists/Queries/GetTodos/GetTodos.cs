@@ -1,6 +1,5 @@
 ﻿using Connectlime.Application.Common.Interfaces;
 using Connectlime.Application.Common.Models;
-using Connectlime.Application.Common.Security;
 using Connectlime.Domain.Enums;
 
 namespace Connectlime.Application.TodoLists.Queries.GetTodos;
