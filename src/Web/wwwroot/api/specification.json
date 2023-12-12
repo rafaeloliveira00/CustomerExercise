@@ -572,6 +572,39 @@
           }
         }
       }
+    },
+    "/api/transaction": {
+      "post": {
+        "tags": [
+          "transaction"
+        ],
+        "operationId": "CreateTransaction",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -999,6 +1032,44 @@
             "maxLength": 200,
             "minLength": 0,
             "nullable": true
+          }
+        }
+      },
+      "CreateTransactionCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "companyId",
+          "personId"
+        ],
+        "properties": {
+          "productId": {
+            "type": "string",
+            "nullable": true
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "companyTax": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "personTax": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "companyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "personId": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }
