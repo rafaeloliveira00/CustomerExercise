@@ -1,18 +1,18 @@
 ﻿using Connectlime.Domain.Entities;
 
-namespace Connectlime.Application.Persons.Queries.GetPersons;
+namespace Connectlime.Application.Companies.Queries;
 
-public class PersonDto
+public class CompanyDto
 {
     public string? Name { get; init; }
     public string? Email { get; set; }
-    public string? Nif { get; init; }
+    public string? Nipc { get; init; }
 
     private class Mapping : Profile
     {
         public Mapping()
         {
-            CreateMap<Person, PersonDto>();
+            CreateMap<Company, CompanyDto>();
         }
     }
 }

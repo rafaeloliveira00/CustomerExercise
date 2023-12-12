@@ -2,7 +2,6 @@
 using Connectlime.Application.Persons.Commands.CreatePerson;
 using Connectlime.Application.Persons.Commands.UpdatePerson;
 using Connectlime.Application.Persons.Queries.GetPersons;
-using Connectlime.Application.TodoItems.Commands.UpdateTodoItemDetail;
 
 namespace Connectlime.Web.Endpoints;
 

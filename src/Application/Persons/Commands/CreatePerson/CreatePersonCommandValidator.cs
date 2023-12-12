@@ -10,6 +10,11 @@ public class CreatePersonCommandValidator : AbstractValidator<CreatePersonComman
     {
         _context = context;
 
+        RuleFor(v => v.Email)
+            .NotEmpty()
+            .MaximumLength(255)
+            .EmailAddress();
+
         RuleFor(v => v.Nif)
             .NotEmpty()
             .MaximumLength(9)
