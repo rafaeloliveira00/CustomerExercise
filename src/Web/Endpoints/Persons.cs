@@ -1,6 +1,8 @@
 ﻿using Connectlime.Application.Common.Models;
 using Connectlime.Application.Persons.Commands.CreatePerson;
+using Connectlime.Application.Persons.Commands.UpdatePerson;
 using Connectlime.Application.Persons.Queries.GetPersons;
+using Connectlime.Application.TodoItems.Commands.UpdateTodoItemDetail;
 
 namespace Connectlime.Web.Endpoints;
 
@@ -11,7 +13,8 @@ public class Persons : EndpointGroupBase
         app.MapGroup(this, "person")
             .MapGet(GetPerson, "{id}")
             .MapGet(GetPersonsWithPagination)
-            .MapPost(CreatePerson);
+            .MapPost(CreatePerson)
+            .MapPut(UpdatePerson, "{id}");
     }
 
     public async Task<dynamic> GetPerson(ISender sender, int id)
@@ -31,5 +34,17 @@ public class Persons : EndpointGroupBase
     public async Task<int> CreatePerson(ISender sender, CreatePersonCommand command)
     {
         return await sender.Send(command);
+    }
+
+    public async Task<IResult> UpdatePerson(ISender sender, int id, UpdatePersonCommand command)
+    {
+        if (id != command.Id)
+        {
+            return Results.BadRequest();
+        }
+
+        await sender.Send(command);
+
+        return Results.NoContent();
     }
 }

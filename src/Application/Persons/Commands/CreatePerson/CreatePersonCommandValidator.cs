@@ -14,7 +14,7 @@ public class CreatePersonCommandValidator : AbstractValidator<CreatePersonComman
             .NotEmpty()
             .MaximumLength(9)
             .MustAsync(BeUniqueNif)
-                .WithMessage("'{PropertyNif}' must be unique.")
+                .WithMessage("'Nif' must be unique.")
                 .WithErrorCode("Unique");
     }
 

@@ -1,5 +1,6 @@
 ﻿using Connectlime.Application.Common.Interfaces;
 using Connectlime.Domain.Entities;
+using Connectlime.Domain.Events;
 
 namespace Connectlime.Application.Persons.Commands.CreatePerson;
 
@@ -31,6 +32,8 @@ public class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, i
         };
 
         _context.Persons.Add(person);
+
+        person.AddDomainEvent(new PersonCreatedEvent(person));
 
         await _context.SaveChangesAsync(cancellationToken);
 
