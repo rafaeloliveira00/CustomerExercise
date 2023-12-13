@@ -1,25 +1,27 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Connectlime.Domain.Entities;
 
-namespace Connectlime.Domain.Entities;
+namespace Connectlime.Application.Transactions.Queries;
 
-public class Transaction : BaseAuditableEntity
+public class TransactionDto
 {
     public int CompanyId { get; init; }
     public int PersonId { get; init; }
     public string? ProductId { get; init; }
-
-    [Column(TypeName = "decimal(9,4)")]
     public decimal UnitPrice { get; init; }
-
     public int Quantity { get; init; }
 
-    [Column(TypeName = "decimal(9,4)")]
+    [Column(TypeName = "decimal(18,4)")]
     public decimal CompanyTax { get; init; }
 
-    [Column(TypeName = "decimal(9,4)")]
+    [Column(TypeName = "decimal(18,4)")]
     public decimal PersonTax { get; init; }
 
-    public Company Company { get; set; } = null!;
-
-    public Person Person { get; set; } = null!;
+    private class Mapping : Profile
+    {
+        public Mapping()
+        {
+            CreateMap<Transaction, TransactionDto>();
+        }
+    }
 }

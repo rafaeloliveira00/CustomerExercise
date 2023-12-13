@@ -26,8 +26,8 @@ public static class DependencyInjection
 
         services.AddScoped(provider =>
         {
-            var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
-            var loggerFactory = provider.GetService<ILoggerFactory>();
+            IEnumerable<FluentValidationRule>? validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
+            ILoggerFactory? loggerFactory = provider.GetService<ILoggerFactory>();
 
             return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
         });
