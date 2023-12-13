@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Connectlime.Infrastructure.Data.Configurations;
 
-public class TodoListConfiguration : IEntityTypeConfiguration<TodoList>
+public class Personfiguration : IEntityTypeConfiguration<Person>
 {
-    public void Configure(EntityTypeBuilder<TodoList> builder)
+    public void Configure(EntityTypeBuilder<Person> builder)
     {
-        builder.Property(t => t.Title)
-            .HasMaxLength(200)
+        builder.Property(t => t.Name)
+            .IsRequired();
+
+        builder.Property(t => t.Nif)
             .IsRequired();
     }
 }

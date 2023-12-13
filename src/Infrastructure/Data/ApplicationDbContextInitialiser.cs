@@ -61,19 +61,87 @@ public class ApplicationDbContextInitialiser
     {
         // Default data
         // Seed, if necessary
-        if (!_context.TodoLists.Any())
+
+        if (!_context.Companies.Any())
         {
-            _context.TodoLists.Add(new TodoList
-            {
-                Title = "Todo List",
-                Items =
+            _context.Companies.AddRange(
+                new List<Company>()
                 {
-                    new TodoItem { Title = "Make a todo list 📃" },
-                    new TodoItem { Title = "Check off the first item ✅" },
-                    new TodoItem { Title = "Realise you've already done two things on the list! 🤯"},
-                    new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
+                    new()
+                    {
+                        Id = 1,
+                        Name = "Company1",
+                        Email = "company1@email.com",
+                        Nipc = "123456789"
+                    },
+                    new()
+                    {
+                        Id = 2,
+                        Name = "Company2",
+                        Email = "company2@email.com",
+                        Nipc = "123456780"
+                    }
                 }
-            });
+            );
+
+            _context.Persons.AddRange(
+                new List<Person>()
+                {
+                    new()
+                    {
+                        Id = 1,
+                        Name = "Company1",
+                        Email = "company1@email.com",
+                        Nif = "123456789"
+                    },
+                    new()
+                    {
+                        Id = 2,
+                        Name = "Company2",
+                        Email = "company2@email.com",
+                        Nif = "123456780"
+                    }
+                }
+            );
+
+            _context.Transactions.AddRange(
+                new List<Transaction>()
+                {
+                    new()
+                    {
+                        Id = 1,
+                        CompanyId = 1,
+                        PersonId = 2,
+                        ProductId = Guid.NewGuid().ToString(),
+                        UnitPrice = 50.30m,
+                        Quantity = 21,
+                        CompanyTax = 0.23m,
+                        PersonTax = 0.29m
+                    },
+                    new()
+                    {
+                        Id = 2,
+                        CompanyId = 1,
+                        PersonId = 1,
+                        ProductId = Guid.NewGuid().ToString(),
+                        UnitPrice = 5.30m,
+                        Quantity = 2,
+                        CompanyTax = 0.23m,
+                        PersonTax = 0.29m
+                    },
+                    new()
+                    {
+                        Id = 3,
+                        CompanyId = 2,
+                        PersonId = 1,
+                        ProductId = Guid.NewGuid().ToString(),
+                        UnitPrice = 20.30m,
+                        Quantity = 261,
+                        CompanyTax = 0.23m,
+                        PersonTax = 0.29m
+                    }
+                }
+            );
 
             await _context.SaveChangesAsync();
         }
