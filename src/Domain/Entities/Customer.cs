@@ -1,9 +1,9 @@
 ﻿namespace Connectlime.Domain.Entities;
 
-public interface ICustomer
+public abstract class Customer : BaseAuditableEntity
 {
     public string? Name { get; init; }
     public string? Email { get; set; }
 
-    public string? GetIdentificationNumber();
+    public abstract string? GetIdentificationNumber();
 }
