@@ -64,54 +64,59 @@ public class ApplicationDbContextInitialiser
 
         if (!_context.Companies.Any())
         {
+            Company company1 = new()
+            {
+                Name = "Company1",
+                Email = "company1@email.com",
+                Nipc = "123456789"
+            };
+
+            Company company2 = new()
+            {
+                Name = "Company2",
+                Email = "company2@email.com",
+                Nipc = "123456780"
+            };
+
             _context.Companies.AddRange(
                 new List<Company>()
                 {
-                    new()
-                    {
-                        Id = 1,
-                        Name = "Company1",
-                        Email = "company1@email.com",
-                        Nipc = "123456789"
-                    },
-                    new()
-                    {
-                        Id = 2,
-                        Name = "Company2",
-                        Email = "company2@email.com",
-                        Nipc = "123456780"
-                    }
+                    company1,
+                    company2
                 }
             );
+
+            Person person1 = new()
+            {
+                Name = "Company1",
+                Email = "company1@email.com",
+                Nif = "123456789"
+            };
+            Person person2 = new()
+            {
+                Name = "Company2",
+                Email = "company2@email.com",
+                Nif = "123456780"
+            };
 
             _context.Persons.AddRange(
                 new List<Person>()
                 {
-                    new()
-                    {
-                        Id = 1,
-                        Name = "Company1",
-                        Email = "company1@email.com",
-                        Nif = "123456789"
-                    },
-                    new()
-                    {
-                        Id = 2,
-                        Name = "Company2",
-                        Email = "company2@email.com",
-                        Nif = "123456780"
-                    }
+                    person1,
+                    person2
                 }
             );
+
+            // save changes to fill the objects with the proper generated id's
+            await _context.SaveChangesAsync();
 
             _context.Transactions.AddRange(
                 new List<Transaction>()
                 {
                     new()
                     {
-                        Id = 1,
-                        CompanyId = 1,
-                        PersonId = 2,
+                        CompanyId = company1.Id,
+                        PersonId = person2.Id,
                         ProductId = Guid.NewGuid().ToString(),
                         UnitPrice = 50.30m,
                         Quantity = 21,
@@ -120,9 +125,8 @@ public class ApplicationDbContextInitialiser
                     },
                     new()
                     {
-                        Id = 2,
-                        CompanyId = 1,
-                        PersonId = 1,
+                        CompanyId = company1.Id,
+                        PersonId = person2.Id,
                         ProductId = Guid.NewGuid().ToString(),
                         UnitPrice = 5.30m,
                         Quantity = 2,
@@ -131,9 +135,8 @@ public class ApplicationDbContextInitialiser
                     },
                     new()
                     {
-                        Id = 3,
-                        CompanyId = 2,
-                        PersonId = 1,
+                        CompanyId = company2.Id,
+                        PersonId = person1.Id,
                         ProductId = Guid.NewGuid().ToString(),
                         UnitPrice = 20.30m,
                         Quantity = 261,
